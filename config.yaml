@@ -1,0 +1,25 @@
+data_dir: data
+chroma_dir: .chroma
+collection_name: phak_local
+embedding_model: sentence-transformers/all-MiniLM-L6-v2
+embedding_device: cpu
+llm_provider: ollama
+llm_model: qwen3.5:2b
+llm_temperature: 0.1
+llm_base_url: http://localhost:11434
+llm_timeout_seconds: 600
+llm_context_tokens: 4096
+llm_api_key_env: OPENAI_API_KEY
+chunk_tokens: 650
+chunk_overlap_tokens: 100
+embedding_batch_size: 64
+retrieval_top_k: 6
+database_path: study.sqlite3
+chapters:
+  4: Principles of Flight
+  5: Aerodynamics of Flight
+  6: Flight Controls
+  7: Aircraft Systems (7-1 to 7-19)
+  12: Weather Theory
+chapter_section_ranges:
+  7: [1, 19]
