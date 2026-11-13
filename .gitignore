@@ -218,3 +218,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local source documents, API credentials, and generated study state
+data/*.pdf
+.chroma/
+*.sqlite3
+*.sqlite3-journal

@@ -1,0 +1,7 @@
+chromadb>=1.0.0
+pymupdf>=1.25.0
+python-dotenv>=1.0.0
+PyYAML>=6.0.0
+ollama>=0.6.0
+sentence-transformers>=4.0.0
+pydantic>=2.7.0

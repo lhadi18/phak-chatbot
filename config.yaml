@@ -1,10 +1,10 @@
 data_dir: data
 chroma_dir: .chroma
 collection_name: phak_local
-embedding_model: sentence-transformers/all-MiniLM-L6-v2
+embedding_model: BAAI/bge-base-en-v1.5
 embedding_device: cpu
-llm_provider: ollama
-llm_model: qwen3.5:2b
+llm_provider: gemini
+llm_model: gemini-3.6-flash
 llm_temperature: 0.1
 llm_base_url: http://localhost:11434
 llm_timeout_seconds: 600
