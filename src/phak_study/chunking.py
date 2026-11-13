@@ -30,7 +30,14 @@ def _is_heading(line: str, font_size: float, max_size: float) -> bool:
     if _CHAPTER_RE.match(line) or _NUMBERED_HEADING_RE.match(line):
         return True
     words = line.split()
-    return font_size >= max_size * 0.94 and len(words) <= 16 and not line.endswith((".", ",", ";"))
+    # Body text is commonly the largest font on a page (especially pages
+    # without a title). Treating every short body line as a heading split
+    # sentences into tiny sections and poisoned retrieval metadata.
+    return (
+        font_size >= max_size * 1.15
+        and 1 <= len(words) <= 12
+        and not line.endswith((".", ",", ";", ":"))
+    )
 
 
 def pages_from_pdf(
@@ -89,6 +96,11 @@ def pages_from_pdf(
                 local_section = current_section
                 continue
             if current_chapter is None:
+                continue
+            # The PHAK PDFs encode many diagram labels at 6–9 pt. They are
+            # interleaved with body copy by geometric text sorting, so omit
+            # small unnumbered labels instead of stitching them into prose.
+            if size < 9.5 and not _NUMBERED_HEADING_RE.match(normalized):
                 continue
             # These are page furniture and are poor retrieval evidence.
             if re.fullmatch(r"\d{1,4}", normalized):

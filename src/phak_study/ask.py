@@ -29,8 +29,13 @@ def _context(sources: list[RetrievedChunk]) -> str:
 
 
 def _citation_warning(answer: str, source_count: int) -> str | None:
-    labels = [int(label) for label in re.findall(r"\[S(\d+)\]", answer)]
-    sentences = [part.strip() for part in re.split(r"(?<=[.!?])\s+|\n+", answer) if part.strip()]
+    answer_body = re.split(r"^\s*(?:\*\*)?Sources?(?:\*\*)?:\s*$", answer, maxsplit=1, flags=re.IGNORECASE | re.MULTILINE)[0]
+    labels = [int(label) for label in re.findall(r"\[S(\d+)\]", answer_body)]
+    sentences = [
+        part.strip()
+        for part in re.split(r"(?<=[.!?])\s+|\n+", answer_body)
+        if part.strip() and not re.fullmatch(r"(?:Answer:|\*\*Answer:\*\*|#+\s*.*)", part.strip(), re.IGNORECASE)
+    ]
     if not labels or any(label < 1 or label > source_count for label in labels):
         return "Citation check failed: the answer has missing or invalid source labels; verify it against the excerpts."
     if any(not re.search(r"\[S\d+\]", sentence) for sentence in sentences):
